@@ -1,4 +1,8 @@
-import { InMemoryGitHubRepositoryRepository } from "../../infrastructure/InMemoryGitHubRepositoryRepository";
+import { useEffect, useState } from "react";
+
+import { config } from "../../devdash_config";
+import { GitHubApiGitHubRepositoryRepository } from "../../infrastructure/GitHubApiGitHubRepositoryRepository";
+import { GitHubApiResponses } from "../../infrastructure/GitHubApiResponse";
 import { ReactComponent as Brand } from "./brand.svg";
 import { ReactComponent as Check } from "./check.svg";
 import styles from "./Dashboard.module.scss";
@@ -7,7 +11,7 @@ import { ReactComponent as PullRequests } from "./git-pull-request.svg";
 import { ReactComponent as IssueOpened } from "./issue-opened.svg";
 import { ReactComponent as Lock } from "./lock.svg";
 import { ReactComponent as Forks } from "./repo-forked.svg";
-import { ReactComponent as Star } from "./star.svg";
+import { ReactComponent as Start } from "./star.svg";
 import { ReactComponent as Unlock } from "./unlock.svg";
 import { ReactComponent as Watchers } from "./watchers.svg";
 
@@ -28,11 +32,20 @@ const isoToReadableDate = (lastUpdate: string): string => {
 	return `${diffDays} days ago`;
 };
 
-const repository = new InMemoryGitHubRepositoryRepository();
-
-const repositories = repository.search();
+const repository = new GitHubApiGitHubRepositoryRepository(config.github_access_token);
 
 export function Dashboard() {
+	const [repositoryData, setRepositoryData] = useState<GitHubApiResponses[]>([]);
+
+	useEffect(() => {
+		repository
+			.search(config.widgets.map((widget) => widget.repository_url))
+			.then((repositoryData) => {
+				setRepositoryData(repositoryData);
+			})
+			.catch((err) => alert(err));
+	}, []);
+
 	return (
 		<>
 			<header className={styles.header}>
@@ -42,7 +55,7 @@ export function Dashboard() {
 				</section>
 			</header>
 			<section className={styles.container}>
-				{repositories.map((widget) => (
+				{repositoryData.map((widget) => (
 					<article className={styles.widget} key={widget.repositoryData.id}>
 						<header className={styles.widget__header}>
 							<a
@@ -58,10 +71,10 @@ export function Dashboard() {
 						</header>
 						<div className={styles.widget__body}>
 							<div className={styles.widget__status}>
-								<p> Last update is {isoToReadableDate(widget.repositoryData.updated_at)}</p>
-								{widget.CiStatus.workflow_runs.length > 0 && (
+								<p>Last update {isoToReadableDate(widget.repositoryData.updated_at)}</p>
+								{widget.ciStatus.workflow_runs.length > 0 && (
 									<div>
-										{widget.CiStatus.workflow_runs[0].status === "completed" ? (
+										{widget.ciStatus.workflow_runs[0].status === "completed" ? (
 											<Check />
 										) : (
 											<Error />
@@ -73,7 +86,7 @@ export function Dashboard() {
 						</div>
 						<footer className={styles.widget__footer}>
 							<div className={styles.widget__stat}>
-								<Star />
+								<Start />
 								<span>{widget.repositoryData.stargazers_count}</span>
 							</div>
 							<div className={styles.widget__stat}>
@@ -90,7 +103,7 @@ export function Dashboard() {
 							</div>
 							<div className={styles.widget__stat}>
 								<PullRequests />
-								<span>{widget.pullRequest.length}</span>
+								<span>{widget.pullRequests.length}</span>
 							</div>
 						</footer>
 					</article>
