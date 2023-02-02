@@ -17,7 +17,9 @@ export function Dashboard({ repository }: { repository: GitHubRepositoryReposito
 	return (
 		<>
 			{!isLoading && repositoryData.length === 0 ? (
-				<WidgetsSkeleton numberOfWidgets={gitHubRepositories.length} />
+				<section className={styles.container}>
+					<WidgetsSkeleton numberOfWidgets={gitHubRepositories.length} />
+				</section>
 			) : (
 				<section className={styles.container}>
 					{repositoryData.map((repository) => (

@@ -63,7 +63,7 @@ function WidgetSkeleton() {
 export function WidgetsSkeleton({ numberOfWidgets }: { numberOfWidgets: number }) {
 	return (
 		<SkeletonTheme baseColor="#1A2233" highlightColor="#535966">
-			{[...new Array(numberOfWidgets)].map((_, i) => (
+			{Array.from(Array(numberOfWidgets)).map((_, i) => (
 				<WidgetSkeleton key={i} />
 			))}
 		</SkeletonTheme>
