@@ -5,20 +5,19 @@ import { GitHubRepositoryRepository } from "../../domain/GitHubRepositoryReposit
 import styles from "./Dashboard.module.scss";
 import { GitHubRepositoryWidget } from "./GitHubRepositoryWidget";
 import { useGitHubRepository } from "./useGitHubRepository";
+import { WidgetsSkeleton } from "./WidgetsSkeleton";
 
 export function Dashboard({ repository }: { repository: GitHubRepositoryRepository }) {
 	const gitHubRepositories = useMemo(() => {
 		return config.widgets.map((widget) => widget.repository_url);
 	}, []);
 
-	const { repositoryData } = useGitHubRepository(repository, gitHubRepositories);
+	const { repositoryData, isLoading } = useGitHubRepository(repository, gitHubRepositories);
 
 	return (
 		<>
-			{repositoryData.length === 0 ? (
-				<div className={styles.empty}>
-					<span>No hay widgets configurados.</span>
-				</div>
+			{!isLoading && repositoryData.length === 0 ? (
+				<WidgetsSkeleton numberOfWidgets={gitHubRepositories.length} />
 			) : (
 				<section className={styles.container}>
 					{repositoryData.map((repository) => (

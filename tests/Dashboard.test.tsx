@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { mock } from "jest-mock-extended";
 
 import { GitHubRepositoryRepository } from "../src/domain/GitHubRepositoryRepository";
