@@ -2,6 +2,7 @@ export interface RepositoryId {
 	organization: string;
 	name: string;
 }
+
 export interface WorkFlowRunStatus {
 	id: number;
 	name: string;
