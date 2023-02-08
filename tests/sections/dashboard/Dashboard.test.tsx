@@ -1,17 +1,19 @@
 import { screen } from "@testing-library/react";
 import { mock } from "jest-mock-extended";
 
-import { GitHubRepositoryRepository } from "../src/domain/GitHubRepositoryRepository";
-import { RepositoryWidgetRepository } from "../src/domain/RepositoryWidgetRepository";
-import { Dashboard } from "../src/sections/dashboard/Dashboard";
-import { GitHubRepositoryMother } from "./GitHubRepositoryMother";
-import { renderWithRouter } from "./renderWithRouter";
+import { GitHubRepositoryRepository } from "../../../src/domain/GitHubRepositoryRepository";
+import { RepositoryWidgetRepository } from "../../../src/domain/RepositoryWidgetRepository";
+import { Dashboard } from "../../../src/sections/dashboard/Dashboard";
+import { GitHubRepositoryMother } from "../../GitHubRepositoryMother";
+import { renderWithRouter } from "../../renderWithRouter";
+import { RepositoryWidgetMother } from "../../RepositoryWidgetMother";
 
 const mockGitHubRepositoryRepository = mock<GitHubRepositoryRepository>();
 const mockWidgetRepository = mock<RepositoryWidgetRepository>();
 
 describe("Dashboard section", () => {
 	it("show all widgets", async () => {
+		const repositoryWidget = RepositoryWidgetMother.create();
 		const gitHubRepository = GitHubRepositoryMother.create();
 
 		mockGitHubRepositoryRepository.search.mockResolvedValue([gitHubRepository]);
@@ -20,6 +22,7 @@ describe("Dashboard section", () => {
 			<Dashboard
 				gitHubRepositoryRepository={mockGitHubRepositoryRepository}
 				repositoryWidgetRepository={mockWidgetRepository}
+				repositoryWidget={[repositoryWidget]}
 			/>
 		);
 
@@ -38,6 +41,7 @@ describe("Dashboard section", () => {
 			<Dashboard
 				gitHubRepositoryRepository={mockGitHubRepositoryRepository}
 				repositoryWidgetRepository={mockWidgetRepository}
+				repositoryWidget={[]}
 			/>
 		);
 
@@ -47,6 +51,7 @@ describe("Dashboard section", () => {
 	});
 
 	it("show last modified date in human readable format", async () => {
+		const repositoryWidget = RepositoryWidgetMother.create();
 		const gitHubRepository = GitHubRepositoryMother.create({ updatedAt: new Date() });
 
 		mockGitHubRepositoryRepository.search.mockResolvedValue([gitHubRepository]);
@@ -55,6 +60,7 @@ describe("Dashboard section", () => {
 			<Dashboard
 				gitHubRepositoryRepository={mockGitHubRepositoryRepository}
 				repositoryWidgetRepository={mockWidgetRepository}
+				repositoryWidget={[repositoryWidget]}
 			/>
 		);
 
