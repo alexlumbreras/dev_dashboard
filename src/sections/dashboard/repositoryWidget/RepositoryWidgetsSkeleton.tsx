@@ -1,3 +1,5 @@
+import "react-loading-skeleton/dist/skeleton.css";
+
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 import { ReactComponent as PullRequests } from "../../../assets/svgs/git-pull-request.svg";

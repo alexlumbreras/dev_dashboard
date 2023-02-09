@@ -1,5 +1,3 @@
-import React from "react";
-
 import { config } from "../../devdash_config";
 import { GitHubApiGitHubRepositoryRepository } from "../../infrastructure/GitHubApiGitHubRepositoryRepository";
 import { LocalStorageRepositoryWidgetRepository } from "../../infrastructure/LocalStorageWidgetRepository";
@@ -18,7 +16,7 @@ export function DashboardFactory() {
 		<Dashboard
 			gitHubRepositoryRepository={gitHubRepositoryRepository}
 			repositoryWidgetRepository={repositoryWidgetRepository}
-			repositoryWidget={repositoryWidgets}
+			repositoryWidgets={repositoryWidgets}
 		/>
 	);
 }

@@ -12,15 +12,15 @@ import { RepositoryWidgetsSkeleton } from "./repositoryWidget/RepositoryWidgetsS
 export function Dashboard({
 	gitHubRepositoryRepository,
 	repositoryWidgetRepository,
-	repositoryWidget,
+	repositoryWidgets,
 }: {
 	gitHubRepositoryRepository: GitHubRepositoryRepository;
 	repositoryWidgetRepository: RepositoryWidgetRepository;
-	repositoryWidget: RepositoryWidget[];
+	repositoryWidgets: RepositoryWidget[];
 }) {
 	const gitHubRepositoryUrls = useMemo(() => {
-		return repositoryWidget.map((widget) => widget.repositoryUrl);
-	}, [repositoryWidget]);
+		return repositoryWidgets.map((widget) => widget.repositoryUrl);
+	}, [repositoryWidgets]);
 
 	const { gitHubRepositories, isLoading } = useGitHubRepositories(
 		gitHubRepositoryRepository,

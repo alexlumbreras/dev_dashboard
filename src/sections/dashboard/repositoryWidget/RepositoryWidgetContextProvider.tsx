@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { config } from "../../../devdash_config";
+import { DomainEvents } from "../../../domain/DomainEvents";
 import { RepositoryWidget } from "../../../domain/RepositoryWidget";
 import { RepositoryWidgetRepository } from "../../../domain/RepositoryWidgetRepository";
 
@@ -18,16 +19,36 @@ export function RepositoryWidgetContextProvider({
 	const [repositoryWidgets, setRepositoryWidgets] = useState<RepositoryWidget[]>([]);
 
 	useEffect(() => {
-		repository.search().then((repositoryWidgets) => {
-			if (repositoryWidgets.length == 0) {
-				config.widgets.map((widget) => ({ id: widget.id, repositoryUrl: widget.repository_url }));
+		repository
+			.search()
+			.then((repositoryWidgets) => {
+				if (repositoryWidgets.length === 0) {
+					setRepositoryWidgets(
+						config.widgets.map((w) => ({ id: w.id, repositoryUrl: w.repository_url }))
+					);
 
-				return;
-			}
+					return;
+				}
 
-			setRepositoryWidgets(repositoryWidgets);
-		});
-	}, []);
+				setRepositoryWidgets(repositoryWidgets);
+			})
+			.catch((err) => alert(err));
+	}, [repository]);
+
+	useEffect(() => {
+		const reloadRepositoryWidgets = () => {
+			repository
+				.search()
+				.then(setRepositoryWidgets)
+				.catch((err) => alert(err));
+		};
+
+		document.addEventListener(DomainEvents.repositoryWidgetAdded, reloadRepositoryWidgets);
+
+		return () => {
+			document.removeEventListener(DomainEvents.repositoryWidgetAdded, reloadRepositoryWidgets);
+		};
+	}, [repository]);
 
 	return (
 		<RepositoryWidgetContext.Provider value={{ repositoryWidgets }}>

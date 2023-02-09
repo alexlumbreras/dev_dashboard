@@ -22,7 +22,7 @@ describe("Dashboard section", () => {
 			<Dashboard
 				gitHubRepositoryRepository={mockGitHubRepositoryRepository}
 				repositoryWidgetRepository={mockWidgetRepository}
-				repositoryWidget={[repositoryWidget]}
+				repositoryWidgets={[repositoryWidget]}
 			/>
 		);
 
@@ -41,7 +41,7 @@ describe("Dashboard section", () => {
 			<Dashboard
 				gitHubRepositoryRepository={mockGitHubRepositoryRepository}
 				repositoryWidgetRepository={mockWidgetRepository}
-				repositoryWidget={[]}
+				repositoryWidgets={[]}
 			/>
 		);
 
@@ -60,7 +60,7 @@ describe("Dashboard section", () => {
 			<Dashboard
 				gitHubRepositoryRepository={mockGitHubRepositoryRepository}
 				repositoryWidgetRepository={mockWidgetRepository}
-				repositoryWidget={[repositoryWidget]}
+				repositoryWidgets={[repositoryWidget]}
 			/>
 		);
 
